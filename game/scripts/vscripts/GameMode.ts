@@ -29,6 +29,7 @@ export class GameMode {
     private configure(): void {
         GameRules.SetCustomGameTeamMaxPlayers(DOTATeam_t.DOTA_TEAM_GOODGUYS, 3);
         GameRules.SetCustomGameTeamMaxPlayers(DOTATeam_t.DOTA_TEAM_BADGUYS, 3);
+        GameRules.SetCustomGameSetupAutoLaunchDelay(3);
 
         GameRules.SetShowcaseTime(0);
         GameRules.SetHeroSelectionTime(heroSelectionTime);
@@ -66,15 +67,5 @@ export class GameMode {
     private OnNpcSpawned(event: NpcSpawnedEvent) {
         // After a hero unit spawns, apply modifier_panic for 8 seconds
         const unit = EntIndexToHScript(event.entindex) as CDOTA_BaseNPC; // Cast to npc since this is the 'npc_spawned' event
-        if (unit.IsRealHero()) {
-            Timers.CreateTimer(1, () => {
-                unit.AddNewModifier(unit, undefined, "modifier_panic", { duration: 8 });
-            });
-
-            if (!unit.HasAbility("meepo_earthbind_ts_example")) {
-                // Add lua ability to the unit
-                unit.AddAbility("meepo_earthbind_ts_example");
-            }
-        }
     }
 }
